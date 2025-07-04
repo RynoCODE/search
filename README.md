@@ -1,33 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Local Document Search Engine
+
+A comprehensive Next.js application for file upload, data extraction, summarization, and search functionality. This application enables users to upload various file types, automatically extracts and processes their content, and provides powerful search capabilities across all uploaded files.
+
+## Features
+
+- **File Upload**: Support for multiple file formats including PDF, DOCX, TXT, images, audio, and video
+- **Content Extraction**: Intelligent parsing based on file type
+  - Text extraction from documents (PDF, DOCX, TXT)
+  - OCR for images
+  - Speech-to-text for audio/video files (simplified implementation)
+- **Text Processing**: 
+  - Automatic summarization of extracted content
+  - Keyword extraction for better searchability
+- **Local Storage**: Files stored locally in the uploads directory
+- **JSON Database**: Metadata and extracted content stored in a local JSON database
+- **Fast Search**: Optimized search across all uploaded content
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to use the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Next.js app router components and pages
+  - `api/`: API routes for file upload and search
+- `components/`: React components for UI
+- `lib/`: Utility functions for file processing and database operations
+- `uploads/`: Directory where uploaded files are stored
+- `data/`: Directory where the JSON database is stored
+- `public/`: Static assets
 
-## Learn More
+## Implementation Details
 
-To learn more about Next.js, take a look at the following resources:
+### File Upload
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application uses Next.js API routes with `multer` for handling file uploads. Files are stored in the `uploads` directory with unique IDs to prevent conflicts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Content Extraction
+
+Based on file type, different extraction methods are used:
+- PDF: Using `pdf-parse` library
+- DOCX: Using `mammoth` library
+- Images: Using `tesseract.js` for OCR
+- Audio/Video: Using `ffmpeg` for audio extraction (simplified implementation)
+
+### Text Processing
+
+The application provides:
+- Text summarization using extraction-based methods
+- Keyword extraction using TF-IDF based approaches
+
+### Search Functionality
+
+The search implementation provides:
+- Case-insensitive search
+- Prioritized results (keywords > summary > content)
+- Result snippets with context around matched text
+
+## Limitations
+
+- The audio/video transcription is simplified and would benefit from integration with proper STT services
+- For large files or high volumes, consider implementing more efficient storage and indexing
+
+## License
+
+MIT
 
 ## Deploy on Vercel
 

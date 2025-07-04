@@ -10,6 +10,14 @@
 !.yarn/releases
 !.yarn/versions
 
+# uploaded files
+/uploads/*
+!/uploads/.gitkeep
+
+# database files
+/data/*
+!/data/.gitkeep
+
 # testing
 /coverage
 
