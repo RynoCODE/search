@@ -6,12 +6,8 @@ import mammoth from 'mammoth';
 import Tesseract from 'tesseract.js';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
-import { promises as fsPromises } from 'fs';
-import { exec } from 'child_process';
-import util from 'util';
 import { createSummary } from './summarizer';
 import { extractKeywords } from './keyword-extractor';
-import { saveToDatabase, getFromDatabase } from './database';
 
 // Configure ffmpeg with the installed path
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
@@ -21,9 +17,6 @@ const uploadsDir = path.join(process.cwd(), 'uploads');
 
 // Ensure uploads directory exists
 fs.ensureDirSync(uploadsDir);
-
-// Helper function to execute shell commands
-const execPromise = util.promisify(exec);
 
 /**
  * Save the uploaded file to the uploads directory
@@ -192,12 +185,13 @@ export async function extractTextFromAudioVideo(filePath: string): Promise<strin
   try {
     // For audio files, convert to WAV format first
     const fileType = getFileType(filePath);
-    let wavFilePath;
     
     if (fileType === 'video') {
-      wavFilePath = await extractAudioFromVideo(filePath);
+      // Side effect: creates WAV file for future transcription use
+      await extractAudioFromVideo(filePath);
     } else if (fileType === 'audio') {
-      wavFilePath = await convertAudioToWav(filePath);
+      // Side effect: converts to WAV for future transcription use
+      await convertAudioToWav(filePath);
     } else {
       throw new Error('Not an audio or video file');
     }

@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 
 interface FileUploadProps {
-  onFileUploaded: (fileData: any) => void;
+  onFileUploaded: (fileData: Record<string, unknown>) => void;
 }
 
 export default function FileUpload({ onFileUploaded }: FileUploadProps) {
