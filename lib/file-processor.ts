@@ -187,8 +187,10 @@ export async function extractTextFromAudioVideo(filePath: string): Promise<strin
     const fileType = getFileType(filePath);
     
     if (fileType === 'video') {
+      // Side effect: creates WAV file for future transcription use
       await extractAudioFromVideo(filePath);
     } else if (fileType === 'audio') {
+      // Side effect: converts to WAV for future transcription use
       await convertAudioToWav(filePath);
     } else {
       throw new Error('Not an audio or video file');

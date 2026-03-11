@@ -27,6 +27,8 @@ module.exports = {
       testMatch: ["<rootDir>/__tests__/components/**/*.test.tsx"],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
       transform: {
+        // Inline tsconfig override needed: main tsconfig uses jsx: "preserve"
+        // which ts-jest cannot transform; component tests require "react-jsx"
         "^.+\\.tsx?$": ["ts-jest", {
           tsconfig: {
             jsx: "react-jsx",
